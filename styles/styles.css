@@ -1,69 +1,91 @@
+/* Grundlegende Terminal-Optik */
 html, body {
   margin: 0;
   padding: 0;
   height: 100%;
-  background: black;
+  background: #000000;
   color: #00ff00;
-  font-family: monospace;
+  font-family: 'Courier New', Courier, 'Fira Code', Monaco, Consolas, monospace;
+  font-size: 1.2rem;
+  line-height: 1.5;
   overflow-y: auto;
 }
 
 body {
   display: flex;
-  flex-direction: column;
   align-items: center;
-  justify-content: flex-start;
-  padding: 1rem;
+  justify-content: center;
   min-height: 100vh;
+  padding: 1rem;
 }
 
+/* Terminal-Fenster mit Rahmen und sanftem Leuchten */
 .terminal {
-  width: 90%;
-  max-width: 700px;
-  line-height: 1.4;
+  width: 100%;
+  max-width: 780px;
+  background: #0a0a0a;
+  border: 2px solid #00ff00;
+  border-radius: 8px;
+  box-shadow: 0 0 20px rgba(0, 255, 0, 0.3);
+  padding: 2rem 1.5rem;
 }
 
+/* Jede Zeile wie in der Konsole */
 .line {
-  margin-bottom: 0.4rem;
+  margin-bottom: 0.5rem;
+  display: flex;
+  flex-wrap: wrap;
 }
 
 .prompt {
+  font-weight: bold;
   color: #00ff00;
-  margin-right: 0.5rem;
+  margin-right: 1rem;
+  white-space: nowrap;
 }
 
 .output {
-  margin-left: 1.5rem;
+  margin-left: 2rem;
   color: #a0ffa0;
+  width: 100%;
+  word-break: break-word;
 }
 
+/* Links: gepunktet unterstrichen – wird bei hover durchgezogen */
 a {
   color: #00ff00;
   text-decoration: none;
+  border-bottom: 1px dotted #00ff00;
 }
 
 a:hover {
-  text-decoration: underline;
+  border-bottom: 1px solid #00ff00;
 }
 
+/* Klassischer Terminal-Cursor */
 .cursor {
   display: inline-block;
-  width: 10px;
-  height: 1em;
-  background: #00ff00;
-  animation: blink 1s infinite;
-  vertical-align: bottom;
+  width: 0.7em;
+  height: 1.2em;
+  background-color: #00ff00;
+  vertical-align: middle;
+  animation: blink 1s step-end infinite;
 }
 
 @keyframes blink {
-  50% {
-    opacity: 0;
-  }
+  0%, 100% { opacity: 1; }
+  50% { opacity: 0; }
 }
 
-.source-notice {
-  margin-top: 2rem;
-  font-size: 0.85rem;
-  opacity: 0.7;
-  text-align: center;
+/* Kleine Anpassung für Mobilgeräte */
+@media (max-width: 500px) {
+  .terminal {
+    padding: 1.5rem 1rem;
+  }
+  .prompt {
+    margin-right: 0.5rem;
+  }
+  .output {
+    margin-left: 1.5rem;
+  }
 }
