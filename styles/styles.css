@@ -1,51 +1,71 @@
+html, body {
+margin: 0;
+padding: 0;
+height: 100%;
+}
 
-        html, body {
-    margin: 0;
-    padding: 0;
-    overflow: hidden;
-    height: 100%;
-        width: 100%;}
+body {
+background: black;
+color: #00ff9c;
+font-family: ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, monospace;
+display: flex;
+flex-direction: column;
+justify-content: center;
+align-items: center;
+padding: 2rem;
+min-height: 100vh;
+}
 
-        body {
-            background-color: black;
-            color: white;
-            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', system-ui, sans-serif;
-            line-height: 1.6;
-            margin: 0;
-            padding: 2rem;
-            min-height: 100vh;
-            display: flex;
-            flex-direction: column;
-            align-items: center;
-            text-align: center;
-            
-        }
+.terminal {
+max-width: 700px;
+width: 100%;
+}
 
-        .content {
-            max-width: 600px;
-            margin: auto;
-            padding: 20px;
-            
-        }
+.line {
+margin-top: 1rem;
+}
 
-        a {
-            color: white;
-            text-decoration: none;
-            border-bottom: 1px solid rgba(255,255,255,0.3);
-            transition: border-color 0.2s ease;
-        }
+.prompt {
+color: #00ff9c;
+margin-right: 8px;
+}
 
-        a:hover {
-            border-color: currentColor;
-        }
+.output {
+margin-left: 1.5rem;
+color: #d0ffd0;
+}
 
-        .source-notice {
-            position: fixed;
-            bottom: 20px;
-            font-size: 0.85em;
-            opacity: 0.7;
-            
-        }
+a {
+color: #00ff9c;
+text-decoration: none;
+}
 
-        
-        .hidden-rel-me { display: none; }
+a:hover {
+text-decoration: underline;
+}
+
+.cursor {
+display: inline-block;
+width: 10px;
+height: 1em;
+background: #00ff9c;
+animation: blink 1s infinite;
+vertical-align: bottom;
+}
+
+@keyframes blink {
+50% {
+opacity: 0;
+}
+}
+
+.source-notice {
+margin-top: 2rem;
+font-size: 0.85rem;
+opacity: 0.7;
+text-align: center;
+}
+
+.hidden-rel-me {
+display: none;
+}
