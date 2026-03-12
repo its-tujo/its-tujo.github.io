@@ -1,30 +1,21 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-  <!-- Meta Tags -->
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <meta http-equiv="X-UA-Compatible" content="IE=edge">
   <meta name="author" content="TuJo">
-  <!-- Theme‑Color jetzt passend zum Terminal‑Grün -->
-  <meta name="theme-color" content="#00ff00">
-  <meta name="robots" content="noindex, nofollow">
+  <meta name="theme-color" content="#ffffff">
+  <meta name="robots" content="index, follow">
 
-  <!-- Open Graph Meta Tags -->
-  <meta property="og:title" content="TuJo @ Web">
+  <meta property="og:title" content="TuJo — Minimal Page">
   <meta property="og:type" content="website">
   <meta property="og:url" content="https://tujo.is-cool.dev/">
-  <meta property="og:image" content="https://tujo.is-cool.dev/images/avatar.jpeg">
-  <meta property="og:description" content="TuJo @ Web">
-  <meta property="og:image:width" content="1200">
-  <meta property="og:image:height" content="630">
+  <meta property="og:description" content="A minimal one-page site with rotating quotes.">
 
-  <!-- Twitter Card Meta Tags -->
-  <meta name="twitter:card" content="summary_large_image">
-  <meta name="twitter:title" content="TuJo @ web">
-  <meta name="twitter:description" content="TuJo's Github page">
+  <meta name="twitter:card" content="summary">
+  <meta name="twitter:title" content="TuJo — Minimal Page">
+  <meta name="twitter:description" content="A minimal one-page site with rotating quotes.">
 
-  <!-- Favicon and Icons -->
   <link rel="icon" type="image/png" href="/icons/favicon-96x96.png" sizes="96x96">
   <link rel="icon" type="image/svg+xml" href="/icons/favicon.svg">
   <link rel="shortcut icon" href="/icons/favicon.ico">
@@ -32,33 +23,36 @@
   <meta name="apple-mobile-web-app-title" content="TuJo">
   <link rel="manifest" href="/icons/site.webmanifest">
 
-  <title>TuJo @ Web</title>
+  <title>TuJo — Minimal Page</title>
   <link rel="stylesheet" href="styles/styles.css">
 </head>
 <body>
-  <div class="terminal">
-    <div class="line"><span class="prompt">tujo@web:~$</span> whoami</div>
-    <div class="output">TuJo</div>
+  <main class="page" aria-live="polite">
+    <section class="quote-box">
+      <p class="quote" id="quote">Loading quote…</p>
+    </section>
+  </main>
 
-    <div class="line"><span class="prompt">tujo@web:~$</span> about</div>
-    <div class="output">My Github page.</div>
+  <footer class="footer">
+    <p>
+      Open Spiele Notice ·
+      <a href="https://github.com/its-tujo/its-tujo.github.io" target="_blank" rel="noopener">This site is open source</a>
+    </p>
+  </footer>
 
-    <div class="line"><span class="prompt">tujo@web:~$</span> links</div>
-    <div class="output">
-      <a href="https://github.com/tujo" target="_blank">GitHub</a>
-    </div>
+  <script>
+    const quotes = [
+      'Simplicity is the ultimate sophistication.',
+      'Less, but better.',
+      'Perfection is achieved when there is nothing left to take away.',
+      'The quieter you become, the more you can hear.',
+      'Small details create big clarity.',
+      'Minimal design is maximum intention.'
+    ];
 
-    <div class="line"><span class="prompt">tujo@web:~$</span> contact</div>
-    <div class="output">
-      <a href="mailto:hello@tujo.is-cool.dev">hello@tujo.is-cool.dev</a>
-    </div>
-
-    <div class="line"><span class="prompt">tujo@web:~$</span> cat source</div>
-    <div class="output">
-      <a href="https://github.com/its-tujo/its-tujo.github.io" target="_blank" rel="noopener">This website is open source</a>
-    </div>
-
-    <div class="line"><span class="prompt">tujo@web:~$</span> <span class="cursor"></span></div>
-  </div>
+    const quoteElement = document.getElementById('quote');
+    const randomQuote = quotes[Math.floor(Math.random() * quotes.length)];
+    quoteElement.textContent = randomQuote;
+  </script>
 </body>
 </html>
