@@ -1,63 +1,138 @@
-:root {
-  color-scheme: light;
-}
-
-* {
-  box-sizing: border-box;
-}
-
-html,
-body {
-  margin: 0;
-  min-height: 100%;
-  font-family: Inter, -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Helvetica, Arial, sans-serif;
-  background: #ffffff;
-  color: #111111;
-}
-
-body {
-  min-height: 100vh;
-  display: grid;
-  grid-template-rows: 1fr auto;
-}
-
-.page {
-  display: grid;
-  place-items: center;
-  padding: 2rem;
-}
-
-.quote-box {
-  max-width: 42rem;
-  text-align: center;
-}
-
-.quote {
-  margin: 0;
-  font-size: clamp(1.4rem, 2.8vw, 2.2rem);
-  line-height: 1.45;
-  font-weight: 400;
-  letter-spacing: 0.01em;
-}
-
-.footer {
-  display: flex;
-  justify-content: center;
-  padding: 1.25rem 1rem 1.75rem;
-}
-
-.footer p {
-  margin: 0;
-  font-size: 0.78rem;
-  color: #606060;
-  text-align: center;
-}
-
-.footer a {
-  color: inherit;
-}
-
-.footer a:hover,
-.footer a:focus-visible {
-  color: #111111;
-}
+diff --git a/styles/styles.css b/styles/styles.css
+index 9f8875ca1b056ab161c698931df06990e4ba9919..c61abe71a86b8b3e51f3669a9f81ab1b3de1df7a 100644
+--- a/styles/styles.css
++++ b/styles/styles.css
+@@ -1,91 +1,63 @@
+-/* Grundlegende Terminal-Optik */
+-html, body {
+-  margin: 0;
+-  padding: 0;
+-  height: 100%;
+-  background: #000000;
+-  color: #00ff00;
+-  font-family: 'Courier New', Courier, 'Fira Code', Monaco, Consolas, monospace;
+-  font-size: 1.2rem;
+-  line-height: 1.5;
+-  overflow-y: auto;
++:root {
++  color-scheme: light;
+ }
+ 
+-body {
+-  display: flex;
+-  align-items: center;
+-  justify-content: center;
+-  min-height: 100vh;
+-  padding: 1rem;
++* {
++  box-sizing: border-box;
+ }
+ 
+-/* Terminal-Fenster mit Rahmen und sanftem Leuchten */
+-.terminal {
+-  width: 100%;
+-  max-width: 780px;
+-  background: #0a0a0a;
+-  border: 2px solid #00ff00;
+-  border-radius: 8px;
+-  box-shadow: 0 0 20px rgba(0, 255, 0, 0.3);
+-  padding: 2rem 1.5rem;
++html,
++body {
++  margin: 0;
++  min-height: 100%;
++  font-family: Inter, -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Helvetica, Arial, sans-serif;
++  background: #ffffff;
++  color: #111111;
+ }
+ 
+-/* Jede Zeile wie in der Konsole */
+-.line {
+-  margin-bottom: 0.5rem;
+-  display: flex;
+-  flex-wrap: wrap;
++body {
++  min-height: 100vh;
++  display: grid;
++  grid-template-rows: 1fr auto;
+ }
+ 
+-.prompt {
+-  font-weight: bold;
+-  color: #00ff00;
+-  margin-right: 1rem;
+-  white-space: nowrap;
++.page {
++  display: grid;
++  place-items: center;
++  padding: 2rem;
+ }
+ 
+-.output {
+-  margin-left: 2rem;
+-  color: #a0ffa0;
+-  width: 100%;
+-  word-break: break-word;
++.quote-box {
++  max-width: 42rem;
++  text-align: center;
+ }
+ 
+-/* Links: gepunktet unterstrichen – wird bei hover durchgezogen */
+-a {
+-  color: #00ff00;
+-  text-decoration: none;
+-  border-bottom: 1px dotted #00ff00;
++.quote {
++  margin: 0;
++  font-size: clamp(1.4rem, 2.8vw, 2.2rem);
++  line-height: 1.45;
++  font-weight: 400;
++  letter-spacing: 0.01em;
+ }
+ 
+-a:hover {
+-  border-bottom: 1px solid #00ff00;
++.footer {
++  display: flex;
++  justify-content: center;
++  padding: 1.25rem 1rem 1.75rem;
+ }
+ 
+-/* Klassischer Terminal-Cursor */
+-.cursor {
+-  display: inline-block;
+-  width: 0.7em;
+-  height: 1.2em;
+-  background-color: #00ff00;
+-  vertical-align: middle;
+-  animation: blink 1s step-end infinite;
++.footer p {
++  margin: 0;
++  font-size: 0.78rem;
++  color: #606060;
++  text-align: center;
+ }
+ 
+-@keyframes blink {
+-  0%, 100% { opacity: 1; }
+-  50% { opacity: 0; }
++.footer a {
++  color: inherit;
+ }
+ 
+-/* Kleine Anpassung für Mobilgeräte */
+-@media (max-width: 500px) {
+-  .terminal {
+-    padding: 1.5rem 1rem;
+-  }
+-  .prompt {
+-    margin-right: 0.5rem;
+-  }
+-  .output {
+-    margin-left: 1.5rem;
+-  }
++.footer a:hover,
++.footer a:focus-visible {
++  color: #111111;
+ }
