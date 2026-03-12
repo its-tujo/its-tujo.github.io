@@ -3,56 +3,40 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <meta name="author" content="TuJo">
-  <meta name="theme-color" content="#ffffff">
-  <meta name="robots" content="index, follow">
-
-  <meta property="og:title" content="TuJo — Minimal Page">
-  <meta property="og:type" content="website">
-  <meta property="og:url" content="https://tujo.is-cool.dev/">
-  <meta property="og:description" content="A minimal one-page site with rotating quotes.">
-
-  <meta name="twitter:card" content="summary">
-  <meta name="twitter:title" content="TuJo — Minimal Page">
-  <meta name="twitter:description" content="A minimal one-page site with rotating quotes.">
-
-  <link rel="icon" type="image/png" href="/icons/favicon-96x96.png" sizes="96x96">
-  <link rel="icon" type="image/svg+xml" href="/icons/favicon.svg">
-  <link rel="shortcut icon" href="/icons/favicon.ico">
-  <link rel="apple-touch-icon" sizes="180x180" href="/icons/apple-touch-icon.png">
-  <meta name="apple-mobile-web-app-title" content="TuJo">
-  <link rel="manifest" href="/icons/site.webmanifest">
-
-  <title>TuJo — Minimal Page</title>
+  <meta name="theme-color" content="#000000">
+  <title>TuJo</title>
   <link rel="stylesheet" href="styles/styles.css">
 </head>
 <body>
   <main class="page" aria-live="polite">
-    <section class="quote-box">
+    <div class="quote-wrap">
       <p class="quote" id="quote">Loading quote…</p>
-    </section>
+      <p class="author" id="author"></p>
+    </div>
   </main>
 
   <footer class="footer">
     <p>
-      Open Spiele Notice ·
-      <a href="https://github.com/its-tujo/its-tujo.github.io" target="_blank" rel="noopener">This site is open source</a>
+      Open Source Notice:
+      <a href="https://github.com/its-tujo/its-tujo.github.io" target="_blank" rel="noopener">View the source on GitHub</a>
     </p>
   </footer>
 
   <script>
     const quotes = [
-      'Simplicity is the ultimate sophistication.',
-      'Less, but better.',
-      'Perfection is achieved when there is nothing left to take away.',
-      'The quieter you become, the more you can hear.',
-      'Small details create big clarity.',
-      'Minimal design is maximum intention.'
+      { text: 'Simplicity is the ultimate sophistication.', author: 'Leonardo da Vinci' },
+      { text: 'Less, but better.', author: 'Dieter Rams' },
+      { text: 'Perfection is achieved when there is nothing left to take away.', author: 'Antoine de Saint-Exupéry' },
+      { text: 'The quieter you become, the more you can hear.', author: 'Ram Dass' },
+      { text: 'Minimal design is maximum intention.', author: 'Unknown' }
     ];
 
     const quoteElement = document.getElementById('quote');
-    const randomQuote = quotes[Math.floor(Math.random() * quotes.length)];
-    quoteElement.textContent = randomQuote;
+    const authorElement = document.getElementById('author');
+    const selectedQuote = quotes[Math.floor(Math.random() * quotes.length)];
+
+    quoteElement.textContent = selectedQuote.text;
+    authorElement.textContent = `— ${selectedQuote.author}`;
   </script>
 </body>
 </html>
