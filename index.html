@@ -2,9 +2,9 @@
 <html lang="en">
 <head>
   <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes">
   <title>TUJO · Developer Portfolio</title>
-
+  
   <!-- Favicons & Web App Manifests (from https://tujo.is-cool.dev/icons/) -->
   <link rel="icon" type="image/svg+xml" href="https://tujo.is-cool.dev/icons/favicon.svg">
   <link rel="icon" type="image/png" sizes="96x96" href="https://tujo.is-cool.dev/icons/favicon-96x96.png">
@@ -13,217 +13,336 @@
   <meta name="apple-mobile-web-app-title" content="TUJO">
   <meta name="theme-color" content="#000000">
 
-  <!-- External CSS (styles/styles.css) -->
-  <link rel="stylesheet" href="styles/styles.css">
-
-  <!-- Google Font for 'Caveat' (caffeine overlap effect) -->
-  <link href="https://fonts.googleapis.com/css2?family=Caveat:wght@400;700&display=swap" rel="stylesheet">
-</head>
-<body>
-
-<main class="container">
-  <!-- Navigation -->
-  <nav class="navbar">
-    <div class="logo">TUJO</div>
-    <div class="nav-links">
-      <a href="#projects">Projects</a>
-      <a href="#contact">Contact</a>
-      <a href="https://github.com/its-tujo" target="_blank" rel="noopener noreferrer">GitHub</a>
-    </div>
-  </nav>
-
-  <!-- Hero Section with overlapping caffeine text -->
-  <section class="hero">
-    <div class="hero-content">
-      <h1 class="hero-title">
-        Building systems with <br>
-        <span class="striked">skill</span>
-        <span class="caffeine-text">mostly caffeine</span>
-      </h1>
-      <p class="hero-description">
-        Student developer running on caffeine, occasional competence, and open‑source experiments.
-      </p>
-    </div>
-    <div id="github-badge" class="github-badge">
-      <div class="skeleton-badge"></div>
-    </div>
-  </section>
-
-  <!-- Projects (GitHub Repositories) -->
-  <section id="projects" class="projects-section">
-    <h2 class="section-title">
-      Latest Repositories
-      <span class="badge-label">(non‑fork)</span>
-    </h2>
-
-    <!-- Loading skeletons -->
-    <div id="repos-loading" class="repos-grid">
-      <div class="skeleton-card"></div><div class="skeleton-card"></div>
-      <div class="skeleton-card"></div><div class="skeleton-card"></div>
-      <div class="skeleton-card"></div><div class="skeleton-card"></div>
-    </div>
-
-    <!-- Repositories container (filled by JS) -->
-    <div id="repos-container" class="repos-grid hidden"></div>
-
-    <!-- Error message container -->
-    <div id="error-message" class="error-box hidden"></div>
-
-    <!-- "View all" link -->
-    <div id="repos-footer" class="view-all hidden">
-      <a href="https://github.com/its-tujo?tab=repositories" target="_blank">View all repositories →</a>
-    </div>
-  </section>
-
-  <!-- Contact Section with descriptive email labels -->
-  <section id="contact" class="contact-section">
-    <h2 class="section-title">Contact</h2>
-    <div class="contact-list">
-      <div class="contact-item">
-        <span class="contact-label">📬 General inquiries</span>
-        <a href="mailto:hello@tujo.is-cool.dev">hello@tujo.is-cool.dev</a>
-      </div>
-      <div class="contact-item">
-        <span class="contact-label">🔒 Security reports</span>
-        <a href="mailto:security@tujo.is-cool.dev">security@tujo.is-cool.dev</a>
-      </div>
-      <p class="contact-note">For collaborations or just to say hi, feel free to reach out.</p>
-    </div>
-  </section>
-
-  <!-- Footer -->
-  <footer class="footer">
-    <span>Open source project. AI-assisted development.</span>
-    <span>© <span id="current-year"></span> TUJO</span>
-  </footer>
-</main>
-
-<!-- All JavaScript inline -->
-<script>
-  (function() {
-    const GITHUB_USERNAME = 'its-tujo';
-
-    const loadingSkeleton = document.getElementById('repos-loading');
-    const reposContainer = document.getElementById('repos-container');
-    const errorDiv = document.getElementById('error-message');
-    const reposFooter = document.getElementById('repos-footer');
-    const githubBadge = document.getElementById('github-badge');
-
-    function showError(message) {
-      if (loadingSkeleton) loadingSkeleton.classList.add('hidden');
-      if (reposContainer) reposContainer.classList.add('hidden');
-      if (reposFooter) reposFooter.classList.add('hidden');
-      if (errorDiv) {
-        errorDiv.classList.remove('hidden');
-        errorDiv.innerHTML = `
-          <p>⚠️ ${message}</p>
-          <button onclick="window.location.reload()">Retry</button>
-        `;
-      }
-      if (githubBadge) {
-        githubBadge.innerHTML = `<div style="color:#71717a; font-size:0.875rem;">GitHub data unavailable</div>`;
-      }
+  <!-- Tailwind CSS + Font Awesome (optional for icons) -->
+  <script src="https://cdn.tailwindcss.com"></script>
+  
+  <!-- Custom override for the overlapping rotated text -->
+  <style>
+    /* Custom rotation & overlap effect */
+    .caffeine-overlap {
+      display: inline-block;
+      color: #facc15;        /* bright yellow-400 */
+      font-weight: 800;
+      transform: rotate(-4deg) translateX(-6px) translateY(2px);
+      background: linear-gradient(135deg, #facc15 0%, #ffb347 100%);
+      background-clip: text;
+      -webkit-background-clip: text;
+      color: transparent;
+      text-shadow: 0 2px 5px rgba(0,0,0,0.2);
+      position: relative;
+      z-index: 2;
+      margin-left: -0.25rem;
     }
 
-    function renderUserBadge(user) {
-      if (!githubBadge) return;
-      if (!user) {
-        githubBadge.innerHTML = `<div style="color:#71717a;">@${GITHUB_USERNAME}</div>`;
-        return;
-      }
-      githubBadge.innerHTML = `
-        <img src="${user.avatar_url}" alt="${user.login}" style="width:80px; height:80px; border-radius:50%; border:2px solid #27272a;">
-        <div style="text-align:right;">
-          <p style="font-weight:500;">${escapeHtml(user.name || user.login)}</p>
-          <p style="font-size:0.875rem; color:#71717a; max-width:200px;">${escapeHtml(user.bio?.slice(0, 60) || 'developer & caffeine consumer')}</p>
-          <div style="display:flex; gap:1rem; margin-top:0.5rem; font-size:0.75rem; color:#52525b; justify-content:flex-end;">
-            <span>📦 ${user.public_repos || 0} repos</span>
-            <span>👥 ${user.followers || 0} followers</span>
+    /* additional hover effect for repo cards */
+    .repo-card:hover {
+      transform: translateY(-2px);
+      transition: all 0.2s ease;
+    }
+
+    /* smooth scroll */
+    html {
+      scroll-behavior: smooth;
+    }
+
+    /* line clamp for descriptions */
+    .line-clamp-2 {
+      display: -webkit-box;
+      -webkit-line-clamp: 2;
+      -webkit-box-orient: vertical;
+      overflow: hidden;
+    }
+  </style>
+</head>
+<body class="bg-black text-white antialiased">
+
+  <main class="min-h-screen bg-black overflow-x-hidden">
+    <div class="max-w-6xl mx-auto px-6">
+
+      <!-- Navigation -->
+      <nav class="flex justify-between items-center py-8 border-b border-zinc-900">
+        <div class="font-black tracking-[0.3em] text-xl text-white">TUJO</div>
+        <div class="flex gap-6 text-sm text-zinc-400">
+          <a href="#projects" class="hover:text-white transition">Projects</a>
+          <a href="#contact" class="hover:text-white transition">Contact</a>
+          <a href="https://github.com/its-tujo" target="_blank" rel="noopener noreferrer" class="hover:text-white transition">GitHub</a>
+        </div>
+      </nav>
+
+      <!-- Hero Section with Overlapping Caffeine Effect -->
+      <section class="py-20 md:py-28">
+        <div class="flex flex-col md:flex-row gap-8 items-start md:items-center justify-between">
+          <div class="flex-1">
+            <h1 class="text-5xl md:text-7xl font-black leading-tight">
+              Building systems with <br class="hidden sm:block">
+              <span class="inline-flex flex-wrap items-baseline gap-x-1 gap-y-2">
+                <span class="line-through decoration-zinc-500 text-zinc-300">skill</span>
+                <span class="caffeine-overlap">mostly caffeine</span>
+              </span>
+            </h1>
+            <p class="text-zinc-400 mt-6 max-w-2xl text-lg">
+              Student developer running on caffeine, occasional competence, and open‑source experiments.
+            </p>
+          </div>
+          <!-- GitHub profile badge (will be filled by JS) -->
+          <div id="github-badge" class="flex flex-col items-center md:items-end gap-3 min-w-[160px]">
+            <!-- dynamic content: avatar + stats from JS -->
+            <div class="animate-pulse flex flex-col items-center gap-2">
+              <div class="w-20 h-20 rounded-full bg-zinc-800"></div>
+              <div class="h-3 w-24 bg-zinc-800 rounded"></div>
+              <div class="h-2 w-16 bg-zinc-800 rounded"></div>
+            </div>
           </div>
         </div>
-      `;
-    }
+      </section>
 
-    function escapeHtml(str) {
-      if (!str) return '';
-      return str.replace(/[&<>]/g, function(m) {
-        if (m === '&') return '&amp;';
-        if (m === '<') return '&lt;';
-        if (m === '>') return '&gt;';
-        return m;
-      });
-    }
+      <!-- Projects Section (GitHub Repositories) -->
+      <section id="projects" class="py-16 scroll-mt-20">
+        <h2 class="text-3xl font-bold mb-10 flex items-center gap-2">
+          Latest Repositories 
+          <span class="text-sm font-normal text-zinc-500">(non‑fork)</span>
+        </h2>
 
-    function createRepoCard(repo) {
-      const updatedDate = new Date(repo.updated_at).toLocaleDateString(undefined, {
-        year: 'numeric', month: 'short', day: 'numeric'
-      });
-      const langBadge = repo.language
-        ? `<span class="lang-badge">${escapeHtml(repo.language)}</span>`
-        : '';
-      return `
-        <a href="${repo.html_url}" target="_blank" rel="noopener noreferrer" class="repo-card">
-          <div class="repo-header">
-            <h3 class="repo-name">${escapeHtml(repo.name)}</h3>
-            ${langBadge}
+        <!-- Loading Skeletons Grid -->
+        <div id="repos-loading" class="grid md:grid-cols-2 lg:grid-cols-3 gap-6">
+          <!-- 6 skeleton cards -->
+          <div class="border border-zinc-800 rounded-2xl p-6 animate-pulse">
+            <div class="h-6 bg-zinc-800 rounded w-3/4 mb-3"></div>
+            <div class="h-4 bg-zinc-800 rounded w-full mb-2"></div>
+            <div class="h-4 bg-zinc-800 rounded w-5/6 mb-4"></div>
+            <div class="flex justify-between"><div class="h-3 bg-zinc-800 rounded w-16"></div><div class="h-3 bg-zinc-800 rounded w-12"></div></div>
           </div>
-          <p class="repo-description">${escapeHtml(repo.description || 'No description provided.')}</p>
-          <div class="repo-footer">
-            <span>🕒 Updated ${updatedDate}</span>
-            <span>⭐ ${repo.stargazers_count || 0}</span>
+          <div class="border border-zinc-800 rounded-2xl p-6 animate-pulse">
+            <div class="h-6 bg-zinc-800 rounded w-3/4 mb-3"></div>
+            <div class="h-4 bg-zinc-800 rounded w-full mb-2"></div>
+            <div class="h-4 bg-zinc-800 rounded w-5/6 mb-4"></div>
+            <div class="flex justify-between"><div class="h-3 bg-zinc-800 rounded w-16"></div><div class="h-3 bg-zinc-800 rounded w-12"></div></div>
           </div>
-        </a>
-      `;
-    }
+          <div class="border border-zinc-800 rounded-2xl p-6 animate-pulse">
+            <div class="h-6 bg-zinc-800 rounded w-3/4 mb-3"></div>
+            <div class="h-4 bg-zinc-800 rounded w-full mb-2"></div>
+            <div class="h-4 bg-zinc-800 rounded w-5/6 mb-4"></div>
+            <div class="flex justify-between"><div class="h-3 bg-zinc-800 rounded w-16"></div><div class="h-3 bg-zinc-800 rounded w-12"></div></div>
+          </div>
+          <div class="border border-zinc-800 rounded-2xl p-6 animate-pulse">
+            <div class="h-6 bg-zinc-800 rounded w-3/4 mb-3"></div>
+            <div class="h-4 bg-zinc-800 rounded w-full mb-2"></div>
+            <div class="h-4 bg-zinc-800 rounded w-5/6 mb-4"></div>
+            <div class="flex justify-between"><div class="h-3 bg-zinc-800 rounded w-16"></div><div class="h-3 bg-zinc-800 rounded w-12"></div></div>
+          </div>
+          <div class="border border-zinc-800 rounded-2xl p-6 animate-pulse">
+            <div class="h-6 bg-zinc-800 rounded w-3/4 mb-3"></div>
+            <div class="h-4 bg-zinc-800 rounded w-full mb-2"></div>
+            <div class="h-4 bg-zinc-800 rounded w-5/6 mb-4"></div>
+            <div class="flex justify-between"><div class="h-3 bg-zinc-800 rounded w-16"></div><div class="h-3 bg-zinc-800 rounded w-12"></div></div>
+          </div>
+          <div class="border border-zinc-800 rounded-2xl p-6 animate-pulse">
+            <div class="h-6 bg-zinc-800 rounded w-3/4 mb-3"></div>
+            <div class="h-4 bg-zinc-800 rounded w-full mb-2"></div>
+            <div class="h-4 bg-zinc-800 rounded w-5/6 mb-4"></div>
+            <div class="flex justify-between"><div class="h-3 bg-zinc-800 rounded w-16"></div><div class="h-3 bg-zinc-800 rounded w-12"></div></div>
+          </div>
+        </div>
 
-    async function fetchGitHubData() {
-      try {
-        if (errorDiv) errorDiv.classList.add('hidden');
+        <!-- Repositories Grid (filled by JS) -->
+        <div id="repos-container" class="grid md:grid-cols-2 lg:grid-cols-3 gap-6 hidden"></div>
+
+        <!-- Error Message -->
+        <div id="error-message" class="hidden bg-red-950/30 border border-red-800 rounded-xl p-6 text-center"></div>
+
+        <!-- Empty / View all button -->
+        <div id="repos-footer" class="text-center mt-10 hidden">
+          <a href="https://github.com/its-tujo?tab=repositories" target="_blank" class="inline-block px-6 py-2 border border-zinc-700 rounded-full text-sm hover:bg-zinc-900 transition">View all repositories →</a>
+        </div>
+      </section>
+
+      <!-- Contact Section with descriptive email labels (PGP sentence removed) -->
+      <section id="contact" class="py-20 border-t border-zinc-900 scroll-mt-20">
+        <h2 class="text-3xl font-bold mb-6">Contact</h2>
+        <div class="text-zinc-400 space-y-5">
+          <!-- General contact email with clear description -->
+          <div class="flex flex-col sm:flex-row sm:items-baseline gap-1 sm:gap-3 p-3 rounded-xl bg-zinc-900/20 border border-zinc-800/50">
+            <div class="flex items-center gap-2 min-w-[130px]">
+              <span class="text-amber-400 text-xl">📬</span>
+              <span class="font-medium text-zinc-300 text-sm uppercase tracking-wide">General inquiries</span>
+            </div>
+            <div class="flex-1">
+              <a href="mailto:hello@tujo.is-cool.dev" class="hover:text-amber-400 transition-colors break-all font-mono text-sm">hello@tujo.is-cool.dev</a>
+              <p class="text-xs text-zinc-500 mt-1">Collaborations, questions, or just saying hi — I reply within a few days.</p>
+            </div>
+          </div>
+
+          <!-- Security contact email without PGP mention -->
+          <div class="flex flex-col sm:flex-row sm:items-baseline gap-1 sm:gap-3 p-3 rounded-xl bg-zinc-900/20 border border-zinc-800/50">
+            <div class="flex items-center gap-2 min-w-[130px]">
+              <span class="text-red-400 text-xl">🔒</span>
+              <span class="font-medium text-zinc-300 text-sm uppercase tracking-wide">Security</span>
+            </div>
+            <div class="flex-1">
+              <a href="mailto:security@tujo.is-cool.dev" class="hover:text-amber-400 transition-colors break-all font-mono text-sm">security@tujo.is-cool.dev</a>
+              <p class="text-xs text-zinc-500 mt-1">Responsible disclosure only.</p>
+            </div>
+          </div>
+
+          <!-- Additional note about response times (optional touch) -->
+          <div class="pt-2 text-xs text-zinc-600 italic flex items-center gap-1">
+            <span>⚡</span>
+            <span>Usually reply within 48h — open source & student life may cause slight delays.</span>
+          </div>
+        </div>
+      </section>
+
+      <!-- Footer -->
+      <footer class="py-8 text-xs text-zinc-600 border-t border-zinc-900 flex justify-between flex-wrap gap-2">
+        <span>Open source project. AI-assisted development.</span>
+        <span>© <span id="current-year"></span> TUJO</span>
+      </footer>
+    </div>
+  </main>
+
+  <script>
+    (function() {
+      const GITHUB_USERNAME = 'its-tujo';
+
+      // DOM elements
+      const loadingSkeleton = document.getElementById('repos-loading');
+      const reposContainer = document.getElementById('repos-container');
+      const errorDiv = document.getElementById('error-message');
+      const reposFooter = document.getElementById('repos-footer');
+      const githubBadge = document.getElementById('github-badge');
+
+      // Helper: show error UI
+      function showError(message) {
+        if (loadingSkeleton) loadingSkeleton.classList.add('hidden');
         if (reposContainer) reposContainer.classList.add('hidden');
         if (reposFooter) reposFooter.classList.add('hidden');
-        if (loadingSkeleton) loadingSkeleton.classList.remove('hidden');
-
-        const [userRes, reposRes] = await Promise.all([
-          fetch(`https://api.github.com/users/${GITHUB_USERNAME}`),
-          fetch(`https://api.github.com/users/${GITHUB_USERNAME}/repos?sort=updated&per_page=100`)
-        ]);
-
-        if (!userRes.ok || !reposRes.ok) {
-          throw new Error(`GitHub API error (${userRes.status} / ${reposRes.status})`);
+        if (errorDiv) {
+          errorDiv.classList.remove('hidden');
+          errorDiv.innerHTML = `
+            <p class="text-red-400 mb-3">⚠️ ${message}</p>
+            <button onclick="window.location.reload()" class="px-4 py-2 bg-zinc-800 rounded-lg text-sm hover:bg-zinc-700 transition">Retry</button>
+          `;
         }
+        // also update badge fallback
+        if (githubBadge) {
+          githubBadge.innerHTML = `<div class="text-center text-zinc-500 text-sm">GitHub data unavailable</div>`;
+        }
+      }
 
-        const user = await userRes.json();
-        let repos = await reposRes.json();
-
-        const filteredRepos = repos
-          .filter(repo => !repo.fork)
-          .sort((a, b) => new Date(b.updated_at) - new Date(a.updated_at))
-          .slice(0, 6);
-
-        renderUserBadge(user);
-
-        if (filteredRepos.length === 0) {
-          if (loadingSkeleton) loadingSkeleton.classList.add('hidden');
-          reposContainer.innerHTML = `<div style="grid-column:1/-1; text-align:center; color:#71717a; padding:3rem;">✨ No public non‑fork repositories found.</div>`;
-          reposContainer.classList.remove('hidden');
+      // render user badge (avatar + stats)
+      function renderUserBadge(user) {
+        if (!githubBadge) return;
+        if (!user) {
+          githubBadge.innerHTML = `<div class="text-zinc-500 text-sm text-right">@${GITHUB_USERNAME}</div>`;
           return;
         }
-
-        const reposHtml = filteredRepos.map(repo => createRepoCard(repo)).join('');
-        reposContainer.innerHTML = reposHtml;
-        reposContainer.classList.remove('hidden');
-        reposFooter.classList.remove('hidden');
-        if (loadingSkeleton) loadingSkeleton.classList.add('hidden');
-
-      } catch (err) {
-        console.error(err);
-        showError(err.message || 'Failed to load GitHub repositories');
+        githubBadge.innerHTML = `
+          <img src="${user.avatar_url}" alt="${user.login}" class="w-20 h-20 rounded-full border-2 border-zinc-800 shadow-md">
+          <div class="text-right">
+            <p class="font-medium">${user.name || user.login}</p>
+            <p class="text-sm text-zinc-500 max-w-[200px] truncate">${user.bio?.slice(0, 60) || 'developer & caffeine consumer'}</p>
+            <div class="flex gap-4 mt-2 text-xs text-zinc-600 justify-end">
+              <span>📦 ${user.public_repos || 0} repos</span>
+              <span>👥 ${user.followers || 0} followers</span>
+            </div>
+          </div>
+        `;
       }
-    }
 
-    document.getElementById('current-year').innerText = new Date().getFullYear();
-    fetchGitHubData();
-  })();
-</script>
+      // create repo card HTML
+      function createRepoCard(repo) {
+        const updatedDate = new Date(repo.updated_at).toLocaleDateString(undefined, { year: 'numeric', month: 'short', day: 'numeric' });
+        const langBadge = repo.language ? `<span class="text-xs px-2 py-1 rounded-full bg-zinc-800 text-zinc-300 shrink-0">${escapeHtml(repo.language)}</span>` : '';
+        return `
+          <a href="${repo.html_url}" target="_blank" rel="noopener noreferrer" class="repo-card group border border-zinc-800 rounded-2xl p-6 hover:border-zinc-600 hover:bg-zinc-900/30 transition-all duration-200 block">
+            <div class="flex items-start justify-between gap-2 mb-3">
+              <h3 class="text-xl font-semibold truncate group-hover:text-zinc-200">${escapeHtml(repo.name)}</h3>
+              ${langBadge}
+            </div>
+            <p class="text-zinc-400 text-sm mb-4 line-clamp-2">${escapeHtml(repo.description || 'No description provided.')}</p>
+            <div class="flex justify-between items-center text-xs text-zinc-500">
+              <span>🕒 Updated ${updatedDate}</span>
+              <span>⭐ ${repo.stargazers_count || 0}</span>
+            </div>
+          </a>
+        `;
+      }
+
+      // simple escape to prevent injection
+      function escapeHtml(str) {
+        if (!str) return '';
+        return str.replace(/[&<>]/g, function(m) {
+          if (m === '&') return '&amp;';
+          if (m === '<') return '&lt;';
+          if (m === '>') return '&gt;';
+          return m;
+        }).replace(/[\uD800-\uDBFF][\uDC00-\uDFFF]/g, function(c) {
+          return c;
+        });
+      }
+
+      // main fetch logic
+      async function fetchGitHubData() {
+        try {
+          // reset UI
+          if (errorDiv) errorDiv.classList.add('hidden');
+          if (reposContainer) reposContainer.classList.add('hidden');
+          if (reposFooter) reposFooter.classList.add('hidden');
+          if (loadingSkeleton) loadingSkeleton.classList.remove('hidden');
+
+          // parallel requests: user + repos (sort by updated, per_page 100)
+          const [userRes, reposRes] = await Promise.all([
+            fetch(`https://api.github.com/users/${GITHUB_USERNAME}`),
+            fetch(`https://api.github.com/users/${GITHUB_USERNAME}/repos?sort=updated&per_page=100`)
+          ]);
+
+          if (!userRes.ok || !reposRes.ok) {
+            throw new Error(`GitHub API error (${userRes.status} / ${reposRes.status})`);
+          }
+
+          const user = await userRes.json();
+          let repos = await reposRes.json();
+
+          // filter out forks, sort by updated_at desc, take first 6
+          const filteredRepos = repos
+            .filter(repo => !repo.fork)
+            .sort((a, b) => new Date(b.updated_at) - new Date(a.updated_at))
+            .slice(0, 6);
+
+          // render user badge
+          renderUserBadge(user);
+
+          // render repos
+          if (filteredRepos.length === 0) {
+            if (loadingSkeleton) loadingSkeleton.classList.add('hidden');
+            reposContainer.innerHTML = `<div class="col-span-full text-center text-zinc-500 py-12">✨ No public non‑fork repositories found.</div>`;
+            reposContainer.classList.remove('hidden');
+            return;
+          }
+
+          // build repo cards html
+          const reposHtml = filteredRepos.map(repo => createRepoCard(repo)).join('');
+          reposContainer.innerHTML = reposHtml;
+          reposContainer.classList.remove('hidden');
+          
+          // show footer link
+          reposFooter.classList.remove('hidden');
+
+          // hide skeleton
+          if (loadingSkeleton) loadingSkeleton.classList.add('hidden');
+
+        } catch (err) {
+          console.error(err);
+          showError(err.message || 'Failed to load GitHub repositories');
+        }
+      }
+
+      // set current year in footer
+      document.getElementById('current-year').innerText = new Date().getFullYear();
+
+      // start fetching
+      fetchGitHubData();
+    })();
+  </script>
 </body>
 </html>
