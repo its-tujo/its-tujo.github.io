@@ -3,40 +3,227 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>TUJO · Developer Portfolio</title>
+
+  <!-- Favicons & Web App Manifests (from https://tujo.is-cool.dev/icons/) -->
+  <link rel="icon" type="image/svg+xml" href="https://tujo.is-cool.dev/icons/favicon.svg">
+  <link rel="icon" type="image/png" sizes="96x96" href="https://tujo.is-cool.dev/icons/favicon-96x96.png">
+  <link rel="apple-touch-icon" sizes="180x180" href="https://tujo.is-cool.dev/icons/apple-touch-icon.png">
+  <link rel="manifest" href="https://tujo.is-cool.dev/icons/site.webmanifest">
+  <meta name="apple-mobile-web-app-title" content="TUJO">
   <meta name="theme-color" content="#000000">
-  <title>TuJo</title>
-  <link rel="stylesheet" href="https://tujo.is-cool.dev/styles/styles.css">
+
+  <!-- External CSS (styles/styles.css) -->
+  <link rel="stylesheet" href="styles/styles.css">
+
+  <!-- Google Font for 'Caveat' (caffeine overlap effect) -->
+  <link href="https://fonts.googleapis.com/css2?family=Caveat:wght@400;700&display=swap" rel="stylesheet">
 </head>
 <body>
-  <main class="page" aria-live="polite">
-    <div class="quote-wrap">
-      <p class="quote" id="quote">Loading quote…</p>
-      <p class="author" id="author"></p>
+
+<main class="container">
+  <!-- Navigation -->
+  <nav class="navbar">
+    <div class="logo">TUJO</div>
+    <div class="nav-links">
+      <a href="#projects">Projects</a>
+      <a href="#contact">Contact</a>
+      <a href="https://github.com/its-tujo" target="_blank" rel="noopener noreferrer">GitHub</a>
     </div>
-  </main>
+  </nav>
 
+  <!-- Hero Section with overlapping caffeine text -->
+  <section class="hero">
+    <div class="hero-content">
+      <h1 class="hero-title">
+        Building systems with <br>
+        <span class="striked">skill</span>
+        <span class="caffeine-text">mostly caffeine</span>
+      </h1>
+      <p class="hero-description">
+        Student developer running on caffeine, occasional competence, and open‑source experiments.
+      </p>
+    </div>
+    <div id="github-badge" class="github-badge">
+      <div class="skeleton-badge"></div>
+    </div>
+  </section>
+
+  <!-- Projects (GitHub Repositories) -->
+  <section id="projects" class="projects-section">
+    <h2 class="section-title">
+      Latest Repositories
+      <span class="badge-label">(non‑fork)</span>
+    </h2>
+
+    <!-- Loading skeletons -->
+    <div id="repos-loading" class="repos-grid">
+      <div class="skeleton-card"></div><div class="skeleton-card"></div>
+      <div class="skeleton-card"></div><div class="skeleton-card"></div>
+      <div class="skeleton-card"></div><div class="skeleton-card"></div>
+    </div>
+
+    <!-- Repositories container (filled by JS) -->
+    <div id="repos-container" class="repos-grid hidden"></div>
+
+    <!-- Error message container -->
+    <div id="error-message" class="error-box hidden"></div>
+
+    <!-- "View all" link -->
+    <div id="repos-footer" class="view-all hidden">
+      <a href="https://github.com/its-tujo?tab=repositories" target="_blank">View all repositories →</a>
+    </div>
+  </section>
+
+  <!-- Contact Section with descriptive email labels -->
+  <section id="contact" class="contact-section">
+    <h2 class="section-title">Contact</h2>
+    <div class="contact-list">
+      <div class="contact-item">
+        <span class="contact-label">📬 General inquiries</span>
+        <a href="mailto:hello@tujo.is-cool.dev">hello@tujo.is-cool.dev</a>
+      </div>
+      <div class="contact-item">
+        <span class="contact-label">🔒 Security reports</span>
+        <a href="mailto:security@tujo.is-cool.dev">security@tujo.is-cool.dev</a>
+      </div>
+      <p class="contact-note">For collaborations or just to say hi, feel free to reach out.</p>
+    </div>
+  </section>
+
+  <!-- Footer -->
   <footer class="footer">
-    <p>
-      Open Source Notice:
-      <a href="https://github.com/its-tujo/its-tujo.github.io" target="_blank" rel="noopener">View the source on GitHub</a>
-    </p>
+    <span>Open source project. AI-assisted development.</span>
+    <span>© <span id="current-year"></span> TUJO</span>
   </footer>
+</main>
 
-  <script>
-    const quotes = [
-      { text: 'Simplicity is the ultimate sophistication.', author: 'Leonardo da Vinci' },
-      { text: 'Less, but better.', author: 'Dieter Rams' },
-      { text: 'Perfection is achieved when there is nothing left to take away.', author: 'Antoine de Saint-Exupéry' },
-      { text: 'The quieter you become, the more you can hear.', author: 'Ram Dass' },
-      { text: 'Minimal design is maximum intention.', author: 'Unknown' }
-    ];
+<!-- All JavaScript inline -->
+<script>
+  (function() {
+    const GITHUB_USERNAME = 'its-tujo';
 
-    const quoteElement = document.getElementById('quote');
-    const authorElement = document.getElementById('author');
-    const selectedQuote = quotes[Math.floor(Math.random() * quotes.length)];
+    const loadingSkeleton = document.getElementById('repos-loading');
+    const reposContainer = document.getElementById('repos-container');
+    const errorDiv = document.getElementById('error-message');
+    const reposFooter = document.getElementById('repos-footer');
+    const githubBadge = document.getElementById('github-badge');
 
-    quoteElement.textContent = selectedQuote.text;
-    authorElement.textContent = `— ${selectedQuote.author}`;
-  </script>
+    function showError(message) {
+      if (loadingSkeleton) loadingSkeleton.classList.add('hidden');
+      if (reposContainer) reposContainer.classList.add('hidden');
+      if (reposFooter) reposFooter.classList.add('hidden');
+      if (errorDiv) {
+        errorDiv.classList.remove('hidden');
+        errorDiv.innerHTML = `
+          <p>⚠️ ${message}</p>
+          <button onclick="window.location.reload()">Retry</button>
+        `;
+      }
+      if (githubBadge) {
+        githubBadge.innerHTML = `<div style="color:#71717a; font-size:0.875rem;">GitHub data unavailable</div>`;
+      }
+    }
+
+    function renderUserBadge(user) {
+      if (!githubBadge) return;
+      if (!user) {
+        githubBadge.innerHTML = `<div style="color:#71717a;">@${GITHUB_USERNAME}</div>`;
+        return;
+      }
+      githubBadge.innerHTML = `
+        <img src="${user.avatar_url}" alt="${user.login}" style="width:80px; height:80px; border-radius:50%; border:2px solid #27272a;">
+        <div style="text-align:right;">
+          <p style="font-weight:500;">${escapeHtml(user.name || user.login)}</p>
+          <p style="font-size:0.875rem; color:#71717a; max-width:200px;">${escapeHtml(user.bio?.slice(0, 60) || 'developer & caffeine consumer')}</p>
+          <div style="display:flex; gap:1rem; margin-top:0.5rem; font-size:0.75rem; color:#52525b; justify-content:flex-end;">
+            <span>📦 ${user.public_repos || 0} repos</span>
+            <span>👥 ${user.followers || 0} followers</span>
+          </div>
+        </div>
+      `;
+    }
+
+    function escapeHtml(str) {
+      if (!str) return '';
+      return str.replace(/[&<>]/g, function(m) {
+        if (m === '&') return '&amp;';
+        if (m === '<') return '&lt;';
+        if (m === '>') return '&gt;';
+        return m;
+      });
+    }
+
+    function createRepoCard(repo) {
+      const updatedDate = new Date(repo.updated_at).toLocaleDateString(undefined, {
+        year: 'numeric', month: 'short', day: 'numeric'
+      });
+      const langBadge = repo.language
+        ? `<span class="lang-badge">${escapeHtml(repo.language)}</span>`
+        : '';
+      return `
+        <a href="${repo.html_url}" target="_blank" rel="noopener noreferrer" class="repo-card">
+          <div class="repo-header">
+            <h3 class="repo-name">${escapeHtml(repo.name)}</h3>
+            ${langBadge}
+          </div>
+          <p class="repo-description">${escapeHtml(repo.description || 'No description provided.')}</p>
+          <div class="repo-footer">
+            <span>🕒 Updated ${updatedDate}</span>
+            <span>⭐ ${repo.stargazers_count || 0}</span>
+          </div>
+        </a>
+      `;
+    }
+
+    async function fetchGitHubData() {
+      try {
+        if (errorDiv) errorDiv.classList.add('hidden');
+        if (reposContainer) reposContainer.classList.add('hidden');
+        if (reposFooter) reposFooter.classList.add('hidden');
+        if (loadingSkeleton) loadingSkeleton.classList.remove('hidden');
+
+        const [userRes, reposRes] = await Promise.all([
+          fetch(`https://api.github.com/users/${GITHUB_USERNAME}`),
+          fetch(`https://api.github.com/users/${GITHUB_USERNAME}/repos?sort=updated&per_page=100`)
+        ]);
+
+        if (!userRes.ok || !reposRes.ok) {
+          throw new Error(`GitHub API error (${userRes.status} / ${reposRes.status})`);
+        }
+
+        const user = await userRes.json();
+        let repos = await reposRes.json();
+
+        const filteredRepos = repos
+          .filter(repo => !repo.fork)
+          .sort((a, b) => new Date(b.updated_at) - new Date(a.updated_at))
+          .slice(0, 6);
+
+        renderUserBadge(user);
+
+        if (filteredRepos.length === 0) {
+          if (loadingSkeleton) loadingSkeleton.classList.add('hidden');
+          reposContainer.innerHTML = `<div style="grid-column:1/-1; text-align:center; color:#71717a; padding:3rem;">✨ No public non‑fork repositories found.</div>`;
+          reposContainer.classList.remove('hidden');
+          return;
+        }
+
+        const reposHtml = filteredRepos.map(repo => createRepoCard(repo)).join('');
+        reposContainer.innerHTML = reposHtml;
+        reposContainer.classList.remove('hidden');
+        reposFooter.classList.remove('hidden');
+        if (loadingSkeleton) loadingSkeleton.classList.add('hidden');
+
+      } catch (err) {
+        console.error(err);
+        showError(err.message || 'Failed to load GitHub repositories');
+      }
+    }
+
+    document.getElementById('current-year').innerText = new Date().getFullYear();
+    fetchGitHubData();
+  })();
+</script>
 </body>
 </html>
